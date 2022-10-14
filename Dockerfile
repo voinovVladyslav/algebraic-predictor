@@ -3,8 +3,8 @@ FROM python:3.10.7-alpine3.16
 ENV PYTHONUNBUFFERED=1
 
 COPY ./requirements.txt /tmp/requirements.txt
-COPY ./backend /backend
-WORKDIR /backend
+COPY ./algebraic_predictor /algebraic_predictor
+WORKDIR /algebraic_predictor
 
 EXPOSE 8000
 
