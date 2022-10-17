@@ -7,6 +7,20 @@ from rest_framework.test import APIClient
 
 
 USER_CREATE_URL = reverse("user:create")
+TOKEN_URL = reverse("user:token")
+
+
+def create_user(email='test@example.com', password='testpassword', **kwargs):
+    data = {
+        "fist_name": "Petro",
+        "last_name": "Poroshenko",
+    }
+    data.update(**kwargs)
+    return get_user_model().objects.create_user(
+        email=email,
+        password=password,
+        **kwargs
+    )
 
 
 class CreateUserApiTests(TestCase):
@@ -69,7 +83,7 @@ class CreateUserApiTests(TestCase):
         self.assertFalse(user.exists())
 
     def test_create_user_with_alrealy_taken_email(self):
-        get_user_model().objects.create_user(email='test@example.com', password='testpassword')
+        user = create_user(email="test@example.com")
 
         data = {
             "email": "test@example.com",
@@ -78,3 +92,30 @@ class CreateUserApiTests(TestCase):
 
         response = self.client.post(USER_CREATE_URL, data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class TokenAuthenticationApiTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_successful_authentication(self):
+        data = {
+            "email": "dima@example.com",
+            "password": "strongpassword",
+        }
+        user = create_user(**data)
+
+        res = self.client.post(TOKEN_URL, data)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertIn('token', res.data)
+
+    def test_wrong_credentials(self):
+        data = {
+            "email": "dima@example.com",
+            "password": "strongpassword",
+        }
+        user = create_user(email='test@example.com', password='testpassword')
+
+        res = self.client.post(TOKEN_URL, data)
+        self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertNotIn('token', res.data)
