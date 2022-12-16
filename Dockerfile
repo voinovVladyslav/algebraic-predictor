@@ -4,9 +4,10 @@ ENV PYTHONUNBUFFERED 1
 
 EXPOSE 5000
 
+COPY . /app
+
 WORKDIR /app
 
-COPY . .
 
 RUN python -m venv /py && \
     pip install --upgrade pip && \
