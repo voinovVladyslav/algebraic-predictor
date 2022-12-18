@@ -4,4 +4,4 @@ from . import views
 
 api = Api(api_app)
 
-api.add_resource(views.HelloWorld, '/api/hello/', endpoint='hello')
+api.add_resource(views.UserCreate, '/api/user/create', endpoint='user-create')
