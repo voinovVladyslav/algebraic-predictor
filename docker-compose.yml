@@ -8,6 +8,8 @@ services:
     ports:
       - 5000:5000
     env_file: .env
+    environment:
+      MONGODB_DATABASE: algebraic_predictor
     command: flask run --host 0.0.0.0
     depends_on:
       - db
@@ -18,12 +20,13 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: strong_password
-      MONGO_INITDB_NAME: algebraic_predictor
+      MONGO_INITDB_DATABASE: algebraic_predictor
     ports:
       - 27017:27017
     volumes:
       - mongo-data:/data/db
       - mongo-config:/data/configdb
+    command: mongod --auth
 
 volumes:
   mongo-data:

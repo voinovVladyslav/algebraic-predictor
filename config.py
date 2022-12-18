@@ -10,9 +10,7 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-    MONGO_URI = "mongodb://localhost:27017/{db_name}".format(
-        db_name=os.environ.get('MONGO_INITDB_NAME')
-    )
+    MONGO_URI = os.environ.get('MONGODB_CONNSTRING')
     DEBUG = True
 
 
