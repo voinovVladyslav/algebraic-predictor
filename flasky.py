@@ -1,5 +1,5 @@
 import os
-from app import create_app
+from app import create_app, db
 import dotenv
 
 
@@ -10,4 +10,4 @@ app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict()
+    return dict(db=db)
