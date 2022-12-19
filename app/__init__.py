@@ -13,12 +13,14 @@ def create_app(config_name):
 
     mongo.init_app(app)
 
-    from .main import main as main_blueprint
-    from .api import api as api_blueprint
-    from .commands import commands as commands_blueprint
+    from .main import main as main_bp
+    from .api import api as api_bp
+    from .commands import commands as commands_bp
+    from .models import models as models_bp
 
-    app.register_blueprint(main_blueprint)
-    app.register_blueprint(api_blueprint)
-    app.register_blueprint(commands_blueprint)
+    app.register_blueprint(main_bp)
+    app.register_blueprint(api_bp)
+    app.register_blueprint(commands_bp)
+    app.register_blueprint(models_bp)
 
     return app
