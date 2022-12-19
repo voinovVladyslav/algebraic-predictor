@@ -6,6 +6,7 @@ from flask_restful import Resource
 
 from app import mongo
 from config import DevelopmentConfig
+from app.models import User
 
 
 
@@ -44,12 +45,5 @@ class UserCreate(Resource):
 
 class Users(Resource):
     def get(self):
-        db = mongo.db
-        users = db.users.find(
-            {},
-            {
-                '_id':0,
-                'password':0,
-            },
-        )
+        users = User().get_queryset()
         return list(users)
