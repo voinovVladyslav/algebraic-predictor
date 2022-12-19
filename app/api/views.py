@@ -1,4 +1,5 @@
 import hashlib
+from uuid import uuid4
 from flask import request
 from flask_restful import Resource
 
@@ -23,10 +24,11 @@ class UserCreate(Resource):
             db.users.insert_one({
                 'username': json_data['username'],
                 'password': hashed_passwd,
+                'token': uuid4().hex,
             })
             return {'success': 'user created successfully'}
 
-        return {'error': 'username has already taken'}
+        return {'error': 'username is already taken'}
 
     @staticmethod
     def has_all_required_fields(json_data):
