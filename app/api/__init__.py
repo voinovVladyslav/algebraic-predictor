@@ -1,8 +1,7 @@
 from flask import Blueprint
 
-
-api = Blueprint('api', __name__)
-
-
 from . import views
 from . import routes
+
+
+api = Blueprint('api', __name__)

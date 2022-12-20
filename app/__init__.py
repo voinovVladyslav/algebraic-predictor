@@ -17,10 +17,12 @@ def create_app(config_name):
     from .api import api as api_bp
     from .commands import commands as commands_bp
     from .models import models as models_bp
+    from .utils import utils as utils_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(commands_bp)
     app.register_blueprint(models_bp)
+    app.register_blueprint(utils_bp)
 
     return app
