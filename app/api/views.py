@@ -1,45 +1,33 @@
 from flask import request
 from flask_restful import Resource
 
-from app import mongo
 from app.models import User
-
-from app.utils.hash import (
-    secure_password,
-    generate_token,
-)
-from app.utils.time import get_now_time
 
 
 class UserCreate(Resource):
     def post(self):
-        db = mongo.db
-        json_data = request.get_json(force=True)
+        json_data: dict = request.get_json(force=True)
 
-        if not self.has_all_required_fields(json_data):
+        if not self.has_all_required_fields(json_data.copy()):
             # to-do: return missing fields
             return {'error': 'required field missing'}
 
         filter = {'username': json_data['username']}
-        user = db.users.find_one(filter=filter)
+        user = User().get_user(**filter)
 
         if not user:
-            password = secure_password(json_data['password'])
-            db.users.insert_one({
-                'username': json_data['username'],
-                'password': password,
-                'token': generate_token(),
-                'date_joined': get_now_time(),
-            })
+            User().create_user(**json_data)
             return {'success': 'user created successfully'}
 
         return {'error': 'username is already taken'}
 
     @staticmethod
-    def has_all_required_fields(json_data):
-        if not json_data.get('username', None):
+    def has_all_required_fields(json_data: dict):
+        if not json_data.pop('username', None):
             return False
-        if not json_data.get('password', None):
+        if not json_data.pop('password', None):
+            return False
+        if json_data:
             return False
         return True
 
@@ -47,4 +35,4 @@ class UserCreate(Resource):
 class Users(Resource):
     def get(self):
         users = User().get_queryset()
-        return list(users)
+        return users
