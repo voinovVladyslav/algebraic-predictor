@@ -1,4 +1,3 @@
-
 from app import mongo
 from . import commands
 

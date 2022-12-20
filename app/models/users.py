@@ -42,4 +42,4 @@ class User(BaseModel):
         try:
             return result[0]
         except IndexError:
-            return result
+            return
