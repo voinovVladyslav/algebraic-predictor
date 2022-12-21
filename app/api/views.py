@@ -43,3 +43,16 @@ class ObtainToken(Resource):
         if not token:
             return {'error': 'invalid credentials'}
         return {'token': token}
+
+
+class UserProfile(Resource):
+    def get(self):
+        # expected value: "Token 23rhifd23iufbeursrgd"
+        token = request.headers.get('Token', None)
+        if not token:
+            return {'error': 'authentication required'}
+
+        user = User().get_user(token=token.split()[1])
+        if not user:
+            return {'error': 'invalid credentials'}
+        return user

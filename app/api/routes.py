@@ -10,6 +10,9 @@ api.add_resource(
 api.add_resource(
     views.ObtainToken, '/api/user/token', endpoint='user=token',
 )
+api.add_resource(
+    views.UserProfile, '/api/user/me', endpoint='user-me',
+)
 
 # for admin
 api.add_resource(

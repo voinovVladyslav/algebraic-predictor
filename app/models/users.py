@@ -36,7 +36,15 @@ class User(BaseModel):
         self.users.insert_one(defaults)
 
     def get_user(self, **kwargs):
-        result = list(self.users.find(kwargs))
+        result = list(self.users.find(
+            kwargs,
+            {
+                '_id': 0,
+                'password': 0,
+                'is_admin': 0,
+                'token': 0,
+            }
+        ))
         try:
             return result[0]
         except IndexError:
