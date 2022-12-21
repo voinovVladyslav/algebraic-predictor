@@ -41,3 +41,12 @@ class User(BaseModel):
             return result[0]
         except IndexError:
             return
+
+    def authenticate(self, username, password):
+        user = self.get_user(
+            username=username,
+            password=secure_password(password)
+        )
+        if not user:
+            return None
+        return user['token']
