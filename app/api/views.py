@@ -8,9 +8,9 @@ class UserCreate(Resource):
     def post(self):
         json_data: dict = request.get_json(force=True)
 
-        if not self.has_all_required_fields(json_data.copy()):
+        if not self.has_all_required_fields(json_data):
             # to-do: return missing fields
-            return {'error': 'required field missing'}
+            return {'error': 'invalid fields'}
 
         filter = {'username': json_data['username']}
         user = User().get_user(**filter)
@@ -23,13 +23,16 @@ class UserCreate(Resource):
 
     @staticmethod
     def has_all_required_fields(json_data: dict):
-        if not json_data.pop('username', None):
-            return False
-        if not json_data.pop('password', None):
-            return False
-        if json_data:
-            return False
-        return True
+        required_fields = {
+            'username': None,
+            'password': None,
+        }
+        required_fields_count = len(required_fields)
+        required_fields.update(json_data)
+        for v in required_fields.values():
+            if not v:
+                return False
+        return len(required_fields) == required_fields_count
 
 
 class Users(Resource):
