@@ -13,19 +13,7 @@ class User(BaseModel):
         self.users = self.db.users
 
     def get_queryset(self, args: str = ''):
-        args = args.split()
-        filter = {'_id': False}
-        filter.update(
-            {
-                x[1:] if x.startswith('-') else x: not x.startswith('-')
-                for x in args
-            }
-        )
-        users = self.users.find(
-            {},
-            filter
-        )
-        return list(users)
+        return super()._get_queryset(self.users, args)
 
     def create_user(self, username, password):
         defaults = {
