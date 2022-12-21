@@ -8,12 +8,22 @@ from app.utils.time import get_now_time
 
 
 class User(BaseModel):
-    def get_queryset(self):
-        users = self.db.users.find(
-            {},
+    def __init__(self):
+        super().__init__()
+        self.users = self.db.users
+
+    def get_queryset(self, args: str = ''):
+        args = args.split()
+        filter = {'_id': False}
+        filter.update(
             {
-                '_id': 0,
-            },
+                x[1:] if x.startswith('-') else x: not x.startswith('-')
+                for x in args
+            }
+        )
+        users = self.users.find(
+            {},
+            filter
         )
         return list(users)
 
@@ -25,7 +35,7 @@ class User(BaseModel):
             'token': generate_token(),
             'is_admin': False,
         }
-        self.db.users.insert_one(defaults)
+        self.users.insert_one(defaults)
 
     def create_admin(self, username, password):
         defaults = {
@@ -35,10 +45,10 @@ class User(BaseModel):
             'token': generate_token(),
             'is_admin': True,
         }
-        self.db.users.insert_one(defaults)
+        self.users.insert_one(defaults)
 
     def get_user(self, **kwargs):
-        result = list(self.db.users.find(kwargs))
+        result = list(self.users.find(kwargs))
         try:
             return result[0]
         except IndexError:
