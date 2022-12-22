@@ -1,12 +1,53 @@
-# litsoft-backend
+# Algebraic predictor
 
-## add set up instruction
+## Set up
 
-### to do
+Copy .env file
 
-- add parameter support for queryset
-- add documentation (swagger)
-- create universal model
-- add console management tools:
-  - drop_db
-  - create superuser
+```bash
+cp .env.example .evn
+```
+
+Build docker image
+
+```bash
+docker build .
+```
+
+Init database
+
+```bash
+docker compose run --rm backend flask db init
+```
+
+Run project
+
+```bash
+docker compose up
+```
+
+## Other commands
+
+Run any command
+
+```bash
+docker compose run --rm backend <command>
+```
+
+## List of commands
+
+List every collections
+
+```bash
+flask db collections
+```
+
+Create admin
+
+```bash
+flask db createadmin
+```
+
+## To do
+
+- add api documentation (swagger)
