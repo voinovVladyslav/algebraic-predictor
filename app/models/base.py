@@ -7,17 +7,17 @@ class BaseModel(ABC):
         self.db = mongo.db
 
     @staticmethod
-    def _get_queryset(collection, args: str = ''):
+    def _get_queryset(collection, filter: dict = {}, args: str = ''):
         args = args.split()
-        filter = {'_id': False}
-        filter.update(
+        fields = {'_id': False}
+        fields.update(
             {
                 x[1:] if x.startswith('-') else x: not x.startswith('-')
                 for x in args
             }
         )
         query = collection.find(
-            {},
-            filter
+            filter,
+            fields
         )
         return list(query)

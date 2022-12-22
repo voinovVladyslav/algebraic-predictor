@@ -12,8 +12,8 @@ class User(BaseModel):
         super().__init__()
         self.users = self.db.users
 
-    def get_queryset(self, args: str = ''):
-        return super()._get_queryset(self.users, args)
+    def get_queryset(self, filter: dict = {}, fields: str = ''):
+        return super()._get_queryset(self.users, filter, fields)
 
     def create_user(self, username, password):
         defaults = {
@@ -36,15 +36,7 @@ class User(BaseModel):
         self.users.insert_one(defaults)
 
     def get_user(self, **kwargs):
-        result = list(self.users.find(
-            kwargs,
-            {
-                '_id': 0,
-                'password': 0,
-                'is_admin': 0,
-                'token': 0,
-            }
-        ))
+        result = self.get_queryset(kwargs)
         try:
             return result[0]
         except IndexError:
@@ -58,3 +50,7 @@ class User(BaseModel):
         if not user:
             return None
         return user['token']
+
+    def is_admin(self, token):
+        user = self.get_user(token=token)
+        return user.get('is_admin')
