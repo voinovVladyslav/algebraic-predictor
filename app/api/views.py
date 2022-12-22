@@ -48,7 +48,7 @@ class ObtainToken(Resource):
 class UserProfile(Resource):
     def get(self):
         # expected value: "Token 23rhifd23iufbeursrgd"
-        token = request.headers.get('Token', None)
+        token = request.headers.get('Authorization', None)
         if not token:
             return {'error': 'authentication required'}
 
