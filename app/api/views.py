@@ -7,15 +7,18 @@ from app.utils.decorators import (
     auth_required,
     admin_only,
 )
+from app.api.errors import (
+    InvalidCredentialsError,
+    UnauthorizedError,
+    UserAlreadyExistsError,
+)
 
 
 class UserCreate(Resource):
     def post(self):
         json_data: dict = request.get_json(force=True)
 
-        if not has_all_required_fields(json_data):
-            # to-do: return missing fields
-            return {'error': 'invalid fields'}
+        has_all_required_fields(json_data)
 
         filter = {'username': json_data['username']}
         user = User().get_user(**filter)
@@ -23,8 +26,7 @@ class UserCreate(Resource):
         if not user:
             User().create_user(**json_data)
             return {'success': 'user created successfully'}
-
-        return {'error': 'username is already taken'}
+        raise UserAlreadyExistsError
 
 
 class Users(Resource):
@@ -39,15 +41,14 @@ class ObtainToken(Resource):
     def post(self):
         json_data = request.get_json(force=True)
 
-        if not has_all_required_fields(json_data):
-            return {'error': 'invalid fields'}
+        has_all_required_fields(json_data)
 
         token = User().authenticate(
             json_data['username'],
             json_data['password'],
         )
         if not token:
-            return {'error': 'invalid credentials'}
+            raise InvalidCredentialsError
         return {'token': token}
 
 
@@ -57,9 +58,9 @@ class UserProfile(Resource):
         # expected value: "Token 23rhifd23iufbeursrgd"
         token = request.headers.get('Authorization', None)
         if not token:
-            return {'error': 'authentication required'}
+            raise UnauthorizedError
 
         user = User().get_user(token=token.split()[1])
         if not user:
-            return {'error': 'invalid credentials'}
+            raise InvalidCredentialsError
         return user

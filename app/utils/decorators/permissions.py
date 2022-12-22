@@ -14,7 +14,7 @@ def admin_only(func):
     def wrapper(*args, **kwargs):
         token = get_token(request)
         if not User().is_admin(token):
-            return {'error': 'permission denied'}
+            return {'error': 'permission denied'}, 403
         return func(*args, **kwargs)
     return wrapper
 
@@ -27,8 +27,8 @@ def auth_required(func):
     def wrapper(*args, **kwargs):
         token = get_token(request)
         if not token:
-            return {'error': 'auth required'}
+            return {'error': 'auth required'}, 401
         if not User().get_user(token=token):
-            return {'error': 'wrong credentials'}
+            return {'error': 'wrong credentials'}, 400
         return func(*args, **kwargs)
     return wrapper
