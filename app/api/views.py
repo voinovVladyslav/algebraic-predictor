@@ -3,6 +3,10 @@ from flask_restful import Resource
 
 from app.models import User
 from app.utils.validators import has_all_required_fields
+from app.utils.decorators import (
+    auth_required,
+    admin_only,
+)
 
 
 class UserCreate(Resource):
@@ -24,6 +28,8 @@ class UserCreate(Resource):
 
 
 class Users(Resource):
+    @auth_required
+    @admin_only
     def get(self):
         users = User().get_queryset()
         return users
@@ -46,6 +52,7 @@ class ObtainToken(Resource):
 
 
 class UserProfile(Resource):
+    @auth_required
     def get(self):
         # expected value: "Token 23rhifd23iufbeursrgd"
         token = request.headers.get('Authorization', None)
