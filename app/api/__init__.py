@@ -8,3 +8,8 @@ from .users import (
     routes,
     views
 )
+
+from .projects import (
+    routes,
+    views
+)

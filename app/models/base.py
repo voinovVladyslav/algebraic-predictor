@@ -21,3 +21,6 @@ class BaseModel(ABC):
             fields
         )
         return list(query)
+
+    def get_queryset(self, filter: dict = {}, args: dict = {}):
+        pass
