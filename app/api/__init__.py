@@ -1,15 +1,17 @@
 from flask import Blueprint
+from flask_restful import Api
 
 
-api = Blueprint('api', __name__)
+api_bp = Blueprint('api', __name__)
+api = Api(api_bp)
 
 
 from .users import (
-    routes,
-    views
+    routes as user_routes,
+    views as user_views
 )
 
 from .projects import (
-    routes,
-    views
+    routes as project_routes,
+    views as project_views
 )
