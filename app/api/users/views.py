@@ -9,7 +9,6 @@ from app.utils.decorators import (
 )
 from app.api.errors import (
     InvalidCredentialsError,
-    UnauthorizedError,
     UserAlreadyExistsError,
 )
 
@@ -54,13 +53,6 @@ class ObtainToken(Resource):
 
 class UserProfile(Resource):
     @auth_required
-    def get(self):
-        # expected value: "Token 23rhifd23iufbeursrgd"
-        token = request.headers.get('Authorization', None)
-        if not token:
-            raise UnauthorizedError
-
-        user = User().get_user(token=token.split()[1])
-        if not user:
-            raise InvalidCredentialsError
+    def get(self, **kwargs):
+        user = User().get_user(token=kwargs['token'])
         return user

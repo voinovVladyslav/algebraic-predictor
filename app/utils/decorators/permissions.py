@@ -30,5 +30,6 @@ def auth_required(func):
             return {'error': 'auth required'}, 401
         if not User().get_user(token=token):
             return {'error': 'wrong credentials'}, 400
+        kwargs['token'] = token
         return func(*args, **kwargs)
     return wrapper
