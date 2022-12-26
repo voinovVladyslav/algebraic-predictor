@@ -4,7 +4,6 @@ from flask_restful import Resource
 from app.models import Project
 from app.utils.decorators import (
     auth_required,
-    admin_only,
 )
 
 
@@ -23,8 +22,11 @@ class ProjectListView(Resource):
     def post(self, **kwargs):
         token = kwargs['token']
         json_data = request.get_json(force=True)
-        Project().has_all_required_fields(json_data)
+        res, error = Project().has_all_required_fields(json_data)
+        if not res:
+            return error
         Project().create(
             user_token=token,
             **json_data
         )
+        return {'ok': 'Created successfully'}
