@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_pymongo import PyMongo
-from flask_restful import Api
 from config import config
 
 
@@ -13,10 +12,6 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     mongo.init_app(app)
-
-    from .api import errors
-    api_app = Api(errors=errors)
-    api_app.init_app(app)
 
     from .main import main as main_bp
     from .api import api_bp

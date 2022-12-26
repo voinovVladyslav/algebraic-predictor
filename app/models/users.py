@@ -11,6 +11,10 @@ class User(BaseModel):
     def __init__(self):
         super().__init__()
         self.users = self.db.users
+        self.required_fields = [
+            'email',
+            'password',
+        ]
 
     def get_queryset(self, filter: dict = {}, fields: str = ''):
         return super()._get_queryset(self.users, filter, fields)
@@ -54,3 +58,9 @@ class User(BaseModel):
     def is_admin(self, token):
         user = self.get_user(token=token)
         return user.get('is_admin')
+
+    def has_all_required_fields(self, json_data: dict):
+        return super()._has_all_reqired_fields(
+            self.required_fields,
+            json_data,
+        )

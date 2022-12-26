@@ -1,7 +1,7 @@
-from app.api import api
+from app.api import api_app
 from . import views
 
 
-api.add_resource(
-    views.ProjectView, '/api/projects/create', endpoint='project-create',
+api_app.add_resource(
+    views.ProjectListView, '/api/projects/', endpoint='projects',
 )
