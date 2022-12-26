@@ -19,7 +19,7 @@ class UserCreate(Resource):
 
         has_all_required_fields(json_data)
 
-        filter = {'username': json_data['username']}
+        filter = {'email': json_data['email']}
         user = User().get_user(**filter)
 
         if not user:
@@ -43,7 +43,7 @@ class ObtainToken(Resource):
         has_all_required_fields(json_data)
 
         token = User().authenticate(
-            json_data['username'],
+            json_data['email'],
             json_data['password'],
         )
         if not token:

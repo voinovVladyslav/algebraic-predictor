@@ -15,9 +15,9 @@ class User(BaseModel):
     def get_queryset(self, filter: dict = {}, fields: str = ''):
         return super()._get_queryset(self.users, filter, fields)
 
-    def create_user(self, username, password):
+    def create_user(self, email, password):
         defaults = {
-            'username': username,
+            'email': email,
             'password': secure_password(password),
             'date_joined': get_now_time(),
             'token': generate_token(),
@@ -25,9 +25,9 @@ class User(BaseModel):
         }
         self.users.insert_one(defaults)
 
-    def create_admin(self, username, password):
+    def create_admin(self, email, password):
         defaults = {
-            'username': username,
+            'email': email,
             'password': secure_password(password),
             'date_joined': get_now_time(),
             'token': generate_token(),
@@ -42,9 +42,9 @@ class User(BaseModel):
         except IndexError:
             return
 
-    def authenticate(self, username, password):
+    def authenticate(self, email, password):
         user = self.get_user(
-            username=username,
+            email=email,
             password=secure_password(password)
         )
         if not user:

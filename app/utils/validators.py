@@ -6,7 +6,7 @@ from app.api.errors import (
 
 def has_all_required_fields(json_data: dict):
     required_fields = {
-        'username': None,
+        'email': None,
         'password': None,
     }
     required_fields_count = len(required_fields)
