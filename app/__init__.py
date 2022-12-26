@@ -19,7 +19,7 @@ def create_app(config_name):
     api_app.init_app(app)
 
     from .main import main as main_bp
-    from .api import api as api_bp
+    from .api import api_bp
     from .commands import commands as commands_bp
     from .models import models as models_bp
     from .utils import utils as utils_bp

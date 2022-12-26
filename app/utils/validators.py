@@ -14,7 +14,7 @@ def has_all_required_fields(json_data: dict):
     for v in required_fields.values():
         if not v:
             raise FieldMissingError
-    if len(required_fields) == required_fields_count:
+    if len(required_fields) != required_fields_count:
         raise TooManyFieldsError
 
     return True
