@@ -15,6 +15,7 @@ class User(BaseModel):
             'email',
             'password',
         ]
+        self.optional_fields = []
 
     def get_queryset(self, filter: dict = {}, fields: str = ''):
         return super()._get_queryset(self.users, filter, fields)
@@ -62,5 +63,6 @@ class User(BaseModel):
     def has_all_required_fields(self, json_data: dict):
         return super()._has_all_reqired_fields(
             self.required_fields,
+            self.optional_fields,
             json_data,
         )
