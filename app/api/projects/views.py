@@ -22,8 +22,8 @@ class ProjectListView(Resource):
     def post(self, **kwargs):
         token = kwargs['token']
         json_data = request.get_json(force=True)
-        res, error = Project().has_all_required_fields(json_data)
-        if not res:
+        error = Project().validate(json_data)
+        if error is not None:
             return error
         Project().create(
             user_token=token,

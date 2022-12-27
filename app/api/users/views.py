@@ -13,7 +13,7 @@ class UserCreate(Resource):
     def post(self):
         json_data: dict = request.get_json(force=True)
 
-        result, error = User().has_all_required_fields(json_data)
+        error = User().validate(json_data)
         if error is not None:
             return error
 
@@ -38,8 +38,8 @@ class ObtainToken(Resource):
     def post(self):
         json_data = request.get_json(force=True)
 
-        result, error = User().has_all_required_fields(json_data)
-        if not result:
+        error = User().validate(json_data)
+        if error is not None:
             return error
 
         token = User().authenticate(
@@ -47,7 +47,7 @@ class ObtainToken(Resource):
             json_data['password'],
         )
         if not token:
-            Errors.invalid_credentials
+            return Errors.invalid_credentials
         return {'token': token}
 
 

@@ -1,6 +1,7 @@
 from .base import BaseModel
 
 from app.utils.time import get_now_time
+from app.api.errors import Errors
 
 
 class Project(BaseModel):
@@ -38,9 +39,14 @@ class Project(BaseModel):
         )
         return result
 
-    def has_all_required_fields(self, json_data: dict):
-        return super()._has_all_reqired_fields(
+    def validate(self, json_data: dict):
+        errors = super()._validate(
             self.required_fields,
             self.optional_fields,
             json_data,
         )
+        if errors is not None:
+            return errors
+        title = json_data['title']
+        if len(title.split()) != 1:
+            return Errors.title_must_not_contain_spaces

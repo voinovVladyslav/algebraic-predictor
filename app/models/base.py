@@ -30,7 +30,7 @@ class BaseModel(ABC):
         pass
 
     @staticmethod
-    def _has_all_reqired_fields(
+    def _validate(
             field_names: list,
             optional_field_names: list,
             json_data: dict
@@ -42,14 +42,13 @@ class BaseModel(ABC):
         required_fields.update(json_data)
         for v in required_fields.values():
             if v is None:
-                return False, Errors.field_missing
+                return Errors.field_missing
 
         for key in json_data.keys():
             if (key not in optional_field_names
                     and key not in field_names):
-                return False, Errors.too_many_fields
+                return Errors.too_many_fields
+        return
 
-        return True, None
-
-    def has_all_required_fields(json_data: dict):
+    def validate(json_data: dict):
         pass

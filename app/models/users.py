@@ -60,8 +60,8 @@ class User(BaseModel):
         user = self.get_user(token=token)
         return user.get('is_admin')
 
-    def has_all_required_fields(self, json_data: dict):
-        return super()._has_all_reqired_fields(
+    def validate(self, json_data: dict):
+        return super()._validate(
             self.required_fields,
             self.optional_fields,
             json_data,

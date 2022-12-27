@@ -23,3 +23,8 @@ class Errors:
         {'error': 'User already exists'},
         400
     )
+    title_must_not_contain_spaces = (
+        {'error': 'Field "title" must be continuous line '
+                  'e.g. "my_title", not "my title"'},
+        400
+    )
