@@ -8,3 +8,10 @@ api_app.add_resource(
     endpoint='projects',
     methods=['GET', 'POST'],
 )
+
+api_app.add_resource(
+    views.ProjectDetailView,
+    '/api/projects/<project_title>/',
+    endpoint='project',
+    methods=['GET', 'PUT', 'PATCH', 'DELETE'],
+)

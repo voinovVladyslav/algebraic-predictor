@@ -5,6 +5,7 @@ from app.models import Project
 from app.utils.decorators import (
     auth_required,
 )
+from app.api.errors import Errors
 
 
 class ProjectListView(Resource):
@@ -30,3 +31,30 @@ class ProjectListView(Resource):
             **json_data
         )
         return {'ok': 'Created successfully'}
+
+
+class ProjectDetailView(Resource):
+    @auth_required
+    def get(self, project_title, **kwargs):
+        project = Project().get_queryset(
+            {
+                'user_token': kwargs['token'],
+                'title': project_title,
+            },
+            '-user_token',
+        )
+        if not project:
+            return Errors.not_found
+        return project
+
+    @auth_required
+    def put(self, **kwargs):
+        pass
+
+    @auth_required
+    def patch(self, **kwargs):
+        pass
+
+    @auth_required
+    def delete(self, **kwargs):
+        pass

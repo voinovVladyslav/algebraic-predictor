@@ -28,3 +28,7 @@ class Errors:
                   'e.g. "my_title", not "my title"'},
         400
     )
+    not_found = (
+        {'error': 'Not found'},
+        404
+    )
