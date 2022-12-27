@@ -51,3 +51,7 @@ flask db createadmin
 ## To do
 
 - add api documentation (swagger)
+- regex validation for
+  - email
+  - password
+  - prject title
