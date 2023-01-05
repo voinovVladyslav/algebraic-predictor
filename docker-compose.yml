@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   backend:
@@ -8,10 +8,9 @@ services:
       - 8000:8000
     volumes:
       - ./algebraic_predictor:/algebraic_predictor
-    command:
-      sh -c "python manage.py wait_for_db &&
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "python manage.py wait_for_db &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
     environment:
       - DB_HOST=db
       - DB_NAME=devdb
@@ -21,7 +20,7 @@ services:
       - db
 
   db:
-    image: postgres:alpine3.16
+    image: postgres:14-alpine
     volumes:
       - dev-db-data:/var/lib/postgresql/data/
     environment:
