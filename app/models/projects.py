@@ -25,7 +25,7 @@ class Project(BaseModel):
             title: str,
             script: str = None,
             environment: str = None,
-            ):
+    ):
 
         result = self.projects.insert_one(
             {
@@ -39,6 +39,24 @@ class Project(BaseModel):
         )
         return result
 
+    def update(
+        self,
+        user_token: str,
+        title: str,
+        new_fields: dict
+    ):
+        update = dict(last_updated=get_now_time())
+        new_fields.pop('date_created', None)
+        new_fields.pop('last_updated', None)
+        update.update(**new_fields)
+        self.projects.update_one(
+            {
+                'user_token': user_token,
+                'title': title,
+            },
+            {'$set': update}
+        )
+
     def validate(self, json_data: dict):
         errors = super()._validate(
             self.required_fields,
@@ -47,6 +65,23 @@ class Project(BaseModel):
         )
         if errors is not None:
             return errors
-        title = json_data['title']
+        return self._validate_title(json_data['title'])
+
+    @staticmethod
+    def _validate_title(title):
         if len(title.split()) != 1:
             return Errors.title_must_not_contain_spaces
+        return
+
+    def validate_patch(self, json_data: dict):
+        errors = super()._validate(
+            self.required_fields,
+            self.optional_fields,
+            json_data,
+        )
+        if errors is not None:
+            return errors
+        title = json_data.get('title', None)
+        if not title:
+            return
+        return self._validate_title(json_data['title'])

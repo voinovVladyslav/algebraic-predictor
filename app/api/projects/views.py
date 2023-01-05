@@ -48,13 +48,38 @@ class ProjectDetailView(Resource):
         return project
 
     @auth_required
-    def put(self, **kwargs):
-        pass
+    def put(self, project_title, **kwargs):
+        json_data = request.get_json(force=True)
+        title = json_data.get('title', None)
+        if title:
+            errors = Project()._validate_title(title)
+            if errors is not None:
+                return errors
+
+        Project().update(
+            user_token=kwargs['token'],
+            title=project_title,
+            new_fields=json_data,
+        )
+        return {'ok': 'updated'}
 
     @auth_required
-    def patch(self, **kwargs):
-        pass
+    def patch(self, project_title, **kwargs):
+        json_data = request.get_json(force=True)
+        errors = Project().validate_patch(
+            json_data
+        )
+        if errors:
+            return errors
+
+        Project().update(
+            user_token=kwargs['token'],
+            title=project_title,
+            new_fields=json_data,
+        )
+        return {'ok': 'updated'}
+
 
     @auth_required
-    def delete(self, **kwargs):
+    def delete(self, project_title, **kwargs):
         pass
