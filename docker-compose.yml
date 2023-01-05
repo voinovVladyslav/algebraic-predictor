@@ -11,11 +11,8 @@ services:
     command: sh -c "python manage.py wait_for_db &&
       python manage.py migrate &&
       python manage.py runserver 0.0.0.0:8000"
-    environment:
-      - DB_HOST=db
-      - DB_NAME=devdb
-      - DB_USER=django_user
-      - DB_PASSWORD=changeme
+    env_file:
+      - .env
     depends_on:
       - db
 
@@ -23,10 +20,8 @@ services:
     image: postgres:14-alpine
     volumes:
       - dev-db-data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_DB=devdb
-      - POSTGRES_USER=django_user
-      - POSTGRES_PASSWORD=changeme
+    env_file:
+      - .env
 
 volumes:
   dev-db-data:
