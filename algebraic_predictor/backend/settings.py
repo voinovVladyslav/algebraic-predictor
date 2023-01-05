@@ -43,11 +43,13 @@ INSTALLED_APPS = [
     'core',
     'user',
     'project',
+    'realtime',
 
     # third-party
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
+    'channels',
 
     # do not run on production
     'corsheaders',
@@ -84,6 +86,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'backend.asgi.application'
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
