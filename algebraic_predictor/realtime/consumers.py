@@ -1,17 +1,14 @@
-import json
-import time
-
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class WSConsumer(WebsocketConsumer):
-    def connect(self):
-        self.accept()
-        number = 0
-        while True:
-            self.send(json.dumps({'number': number}))
-            time.sleep(1)
-            number += 1
+class RandintConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.channel_layer.group_add('randint', self.channel_name)
+        await self.accept()
 
-    def disconnect(self, code):
-        return super().disconnect(code)
+    async def disconnect(self, message):
+        await self.channel_layer.group_discard('randint', self.channel_name)
+
+    async def send_randint(self, event):
+        number = event['text']
+        await self.send(str(number))

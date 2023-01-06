@@ -10,11 +10,11 @@
     <h1>It's realtime counter</h1>
     <p id="number">{{ number }}</p>
     <script>
-      var socket = new WebSocket("ws://127.0.0.1:8000/ws/counter/");
+      var socket = new WebSocket("ws://127.0.0.1:8000/ws/randint/");
       socket.onmessage = function (event) {
-        var data = JSON.parse(event.data);
-        console.log(data);
-        document.querySelector("#number").innerText = data.number;
+        var randint = event.data;
+        console.log(randint);
+        document.querySelector("#number").innerText = randint;
       };
     </script>
   </body>

@@ -62,5 +62,9 @@ services:
     ports:
       - "6397:6397"
 
+    volumes:
+      - redis-cache:/data
+
 volumes:
   dev-db-data:
+  redis-cache:

@@ -1,7 +1,7 @@
 from django.urls import path
 
-from .consumers import WSConsumer
+from .consumers import RandintConsumer
 
 ws_urlpatterns = [
-    path('ws/counter/', WSConsumer.as_asgi())
+    path('ws/randint/', RandintConsumer.as_asgi())
 ]
