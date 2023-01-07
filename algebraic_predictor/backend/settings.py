@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'core',
     'user',
     'project',
-    'realtime',
+    'console',
 
     # third-party
     'rest_framework',

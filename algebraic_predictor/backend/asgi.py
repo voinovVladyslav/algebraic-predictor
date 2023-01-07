@@ -7,9 +7,9 @@ from channels.routing import (
     URLRouter,
 )
 
-from realtime.middleware import TokenAuthMiddleware
+from console.middleware import TokenAuthMiddleware
 
-from realtime.routing import ws_urlpatterns
+from console.routing import ws_urlpatterns
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
