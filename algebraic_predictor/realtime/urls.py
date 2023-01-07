@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import counter
+from . import views
 
 
 urlpatterns = [
-    path('', counter, name='counter'),
+    path('int/', views.counter, name='counter'),
+    path('', views.console, name='console'),
 ]

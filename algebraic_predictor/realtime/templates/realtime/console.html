@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Console</title>
+  </head>
+  <body>
+    <h1>User auth imitation</h1>
+    <h2 id="user">Anonymus User</h2>
+    <script>
+      var socket = new WebSocket("ws://127.0.0.1:8000/ws/console/", [
+        "token",
+        "0a0d7f0b3fccec1ef96f23e26bf80651099bb4a9",
+      ]);
+      socket.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        var email = data["email"];
+        document.querySelector("#user").innerText = email;
+      };
+    </script>
+  </body>
+</html>
