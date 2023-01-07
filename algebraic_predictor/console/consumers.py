@@ -12,6 +12,6 @@ class ConsoleConsumer(AsyncWebsocketConsumer):
         self.groups.append(token)
         await self.accept()
 
-    async def send_randint(self, event):
-        number = event['text']
-        await self.send(str(number))
+    async def send_email(self, event):
+        email = event['text']
+        await self.send(email)

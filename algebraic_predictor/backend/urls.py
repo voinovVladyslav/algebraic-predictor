@@ -19,5 +19,5 @@ urlpatterns = [
         name='api-docs',
     ),
 
-    path('', include('realtime.urls')),
+    path('', include('console.urls')),
 ]

@@ -1,19 +1,20 @@
-from random import randint
-from backend.celery import app
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from rest_framework.authtoken.models import Token
+
+from backend.celery import app
 
 
 channel_layer = get_channel_layer()
 
 
 @app.task
-def get_random_number():
-    n = randint(0, 100_000_000)
+def send_email(token):
+    user = Token.objects.get(key=token).user
     async_to_sync(channel_layer.group_send)(
-        'randint',
+        token,
         {
-            'type': 'send_randint',
-            'text': n,
+            'type': 'send_email',
+            'text': user.email,
         }
     )

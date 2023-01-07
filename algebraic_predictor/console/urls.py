@@ -4,6 +4,5 @@ from . import views
 
 
 urlpatterns = [
-    path('int/', views.counter, name='counter'),
     path('', views.console, name='console'),
 ]

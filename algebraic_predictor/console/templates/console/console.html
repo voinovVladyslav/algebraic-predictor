@@ -9,16 +9,32 @@
   <body>
     <h1>User auth imitation</h1>
     <h2 id="user">Anonymus User</h2>
+    <input type="text" id="token" />
+    <button onclick="processData()">Get email</button>
+    <button onclick="connectToConsoleByToken()">Connect to console</button>
     <script>
-      var socket = new WebSocket("ws://127.0.0.1:8000/ws/console/", [
-        "token",
-        "0a0d7f0b3fccec1ef96f23e26bf80651099bb4a9",
-      ]);
-      socket.onmessage = function (event) {
-        var data = JSON.parse(event.data);
-        var email = data["email"];
-        document.querySelector("#user").innerText = email;
-      };
+      function processData() {
+        token = document.getElementById("token").value;
+        headers = { Authorization: `token ${token}` };
+        fetch("http://127.0.0.1:8000/api/run/", {
+          method: "GET",
+          headers: headers,
+        })
+          .then((response) => response.text())
+          .then((text) => console.log(text));
+      }
+      function connectToConsoleByToken() {
+        token = document.getElementById("token").value;
+        var socket = new WebSocket("ws://127.0.0.1:8000/ws/console/", [
+          "token",
+          token,
+        ]);
+        socket.onmessage = function (event) {
+          var email = event.data;
+          console.log(email);
+          document.getElementById("user").innerHTML = email;
+        };
+      }
     </script>
   </body>
 </html>
