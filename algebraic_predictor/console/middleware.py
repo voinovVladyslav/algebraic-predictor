@@ -16,7 +16,7 @@ class TokenAuthMiddleware:
 
     async def __call__(self, scope, receive, send):
         try:
-            token = scope['subprotocols'][1]
+            token = scope['subprotocols'].pop()
             user = await get_user(token)
             scope['user'] = user
             scope['token'] = token

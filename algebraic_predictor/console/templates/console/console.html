@@ -16,7 +16,7 @@
       function processData() {
         token = document.getElementById("token").value;
         headers = { Authorization: `token ${token}` };
-        fetch("http://127.0.0.1:8000/api/run/", {
+        fetch("http://127.0.0.1:8000/api/projects/run/", {
           method: "GET",
           headers: headers,
         })
@@ -25,10 +25,7 @@
       }
       function connectToConsoleByToken() {
         token = document.getElementById("token").value;
-        var socket = new WebSocket("ws://127.0.0.1:8000/ws/console/", [
-          "token",
-          token,
-        ]);
+        var socket = new WebSocket("ws://127.0.0.1:8000/ws/console/", token);
         socket.onmessage = function (event) {
           var email = event.data;
           console.log(email);

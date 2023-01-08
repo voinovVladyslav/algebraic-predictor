@@ -14,6 +14,6 @@ app_name = 'project'
 
 
 urlpatterns = [
-    path('run/', RunProjectView.as_view(), name='run'),
+    path('projects/run/', RunProjectView.as_view(), name='run'),
     path('', include(router.urls)),
 ]
