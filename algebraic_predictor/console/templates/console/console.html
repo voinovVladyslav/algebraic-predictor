@@ -9,14 +9,19 @@
   <body>
     <h1>User auth imitation</h1>
     <h2 id="user">Anonymus User</h2>
+    <h6>Token:</h6>
     <input type="text" id="token" />
-    <button onclick="processData()">Get email</button>
+    <h6>Project id</h6>
+    <input type="text" id="project_id" />
     <button onclick="connectToConsoleByToken()">Connect to console</button>
+    <button onclick="runProject()">Run project</button>
     <script>
-      function processData() {
-        token = document.getElementById("token").value;
+      function runProject() {
+        var token = document.getElementById("token").value;
+        var project_id = document.getElementById("project_id").value;
+
         headers = { Authorization: `token ${token}` };
-        fetch("http://127.0.0.1:8000/api/projects/run/", {
+        fetch(`http://127.0.0.1:8000/api/projects/${project_id}/run/`, {
           method: "GET",
           headers: headers,
         })
@@ -27,9 +32,9 @@
         token = document.getElementById("token").value;
         var socket = new WebSocket("ws://127.0.0.1:8000/ws/console/", token);
         socket.onmessage = function (event) {
-          var email = event.data;
-          console.log(email);
-          document.getElementById("user").innerHTML = email;
+          var msg = event.data;
+          console.log(msg);
+          document.getElementById("user").innerHTML += msg;
         };
       }
     </script>

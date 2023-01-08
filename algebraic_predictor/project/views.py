@@ -1,13 +1,13 @@
-from rest_framework.viewsets import ModelViewSet
 from rest_framework import authentication, permissions
-from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from rest_framework.authtoken.models import Token
 
 from project.serializers import ProjectSerializer
 from project.models import Project
 
-from console.tasks import send_email
+from console.tasks import send_log
 
 
 class ProjectViewSet(ModelViewSet):
@@ -22,12 +22,14 @@ class ProjectViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-
-class RunProjectView(GenericAPIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, format=None):
+    @action(detail=True)
+    def run(self, request, *args, **kwargs):
         token = Token.objects.get(user=request.user)
-        send_email.delay(token.key)
-        return Response({'ok': 1})
+        project = self.get_object()
+        send_log.delay(project.source, token.key)
+        return Response({'status': 'run'})
+
+
+run_project = ProjectViewSet.as_view({
+    'get': 'run'
+})

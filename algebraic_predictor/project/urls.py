@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from project.views import (
     ProjectViewSet,
-    RunProjectView,
+    run_project,
 )
 
 
@@ -14,6 +14,6 @@ app_name = 'project'
 
 
 urlpatterns = [
-    path('projects/run/', RunProjectView.as_view(), name='run'),
+    path('projects/<int:pk>/run/', run_project, name='project-run'),
     path('', include(router.urls)),
 ]
