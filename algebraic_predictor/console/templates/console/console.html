@@ -8,10 +8,11 @@
   </head>
   <body>
     <h1>User auth imitation</h1>
-    <h2 id="user">Anonymus User</h2>
-    <h6>Token:</h6>
+    <h2 id="user">Project code:</h2>
+    <p id="project"></p>
+    <h3>Token:</h3>
     <input type="text" id="token" />
-    <h6>Project id</h6>
+    <h3>Project id</h3>
     <input type="text" id="project_id" />
     <button onclick="connectToConsoleByToken()">Connect to console</button>
     <button onclick="runProject()">Run project</button>
@@ -22,7 +23,7 @@
 
         headers = { Authorization: `token ${token}` };
         fetch(`http://127.0.0.1:8000/api/projects/${project_id}/run/`, {
-          method: "GET",
+          method: "POST",
           headers: headers,
         })
           .then((response) => response.text())
@@ -34,7 +35,7 @@
         socket.onmessage = function (event) {
           var msg = event.data;
           console.log(msg);
-          document.getElementById("user").innerHTML += msg;
+          document.getElementById("project").innerHTML += " " + msg;
         };
       }
     </script>

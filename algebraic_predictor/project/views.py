@@ -22,14 +22,14 @@ class ProjectViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    @action(detail=True)
+    @action(
+        methods=['POST'],
+        detail=True,
+        url_path='run',
+        url_name='project-run',
+    )
     def run(self, request, *args, **kwargs):
         token = Token.objects.get(user=request.user)
         project = self.get_object()
         send_log.delay(project.source, token.key)
-        return Response({'status': 'run'})
-
-
-run_project = ProjectViewSet.as_view({
-    'get': 'run'
-})
+        return Response({'run': 'ok'})
