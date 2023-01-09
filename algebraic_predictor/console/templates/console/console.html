@@ -31,7 +31,9 @@
       }
       function connectToConsoleByToken() {
         token = document.getElementById("token").value;
-        var socket = new WebSocket("ws://127.0.0.1:8000/ws/console/", token);
+        var socket = new WebSocket(
+          `ws://127.0.0.1:8000/ws/console/?token=${token}`
+        );
         socket.onmessage = function (event) {
           var msg = event.data;
           console.log(msg);

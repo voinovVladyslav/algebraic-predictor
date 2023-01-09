@@ -1,3 +1,4 @@
+import re
 from channels.db import database_sync_to_async
 from rest_framework.authtoken.models import Token
 
@@ -16,7 +17,11 @@ class TokenAuthMiddleware:
 
     async def __call__(self, scope, receive, send):
         try:
-            token = scope['subprotocols'].pop()
+            query = scope['query_string']
+            token = re.findall(
+                r"(?<=token=)\w+(?=&)|(?<=token=)\w+",
+                str(query)
+            )[0]
             user = await get_user(token)
             scope['user'] = user
             scope['token'] = token
