@@ -43,13 +43,11 @@ INSTALLED_APPS = [
     'core',
     'user',
     'project',
-    'console',
 
     # third-party
     'rest_framework',
     'rest_framework.authtoken',
     'drf_spectacular',
-    'channels',
 
     # do not run on production
     'corsheaders',
@@ -86,14 +84,8 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'backend.asgi.application'
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
-CELERY_BROKER_URL = os.environ.get(
-    'REDIS_LOCATION',
-    'redis://127.0.0.1:6379/1'
-)
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -107,19 +99,6 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
     }
 }
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [(
-                os.environ.get('REDIS_HOST'),
-                os.environ.get('REDIS_PORT'),
-            )]
-        }
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
