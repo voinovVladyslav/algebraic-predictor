@@ -16,7 +16,9 @@ from .urls import PROJECTS_URL, get_project_detail_url
         'auth required for POST',
     ]
 )
-def test_auth_required_for_project_list(db, api_client, method_name, status_code):
+def test_auth_required_for_project_list(
+    db, api_client, method_name, status_code
+):
     response = getattr(api_client, method_name)(PROJECTS_URL)
     assert response.status_code == status_code
 
@@ -38,6 +40,8 @@ def test_auth_required_for_project_list(db, api_client, method_name, status_code
         'auth required for DELETE',
     ]
 )
-def test_auth_required_for_project_list(db, api_client, method_name, status_code):
+def test_auth_required_for_project_detail(
+    db, api_client, method_name, status_code
+):
     response = getattr(api_client, method_name)(get_project_detail_url(1))
     assert response.status_code == status_code
